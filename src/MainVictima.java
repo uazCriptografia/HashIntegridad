@@ -1,5 +1,4 @@
-import java.io.IOException;
-import java.rmi.server.ExportException;
+import java.util.Scanner;
 
 /**
  * Created by porfirio on 3/23/17.
@@ -7,9 +6,11 @@ import java.rmi.server.ExportException;
 public class MainVictima {
     public static void main(String[] args) {
         Victima victima = new Victima();
+        Scanner scanner = new Scanner(System.in);
         try {
-            System.out.println("Víctima> Enviando mensajes...");
-            victima.sendMessage("Hola mundo");
+            System.out.print("Víctima> Ingresa el nombre del archivo que " +
+                    "deseas enviar: ");
+            victima.sendFile(scanner.nextLine());
         } catch (Exception e) {
             System.err.println("ERROR: " + e);
         }

@@ -36,15 +36,31 @@ public class Destino {
                 (sourceSocket.getInputStream()));
         // Writer para enviar respuestas al cliente
         PrintStream output = new PrintStream(sourceSocket.getOutputStream());
+        System.out.println("Destino> Recibiendo el mensaje...");
         // Lee mensaje del cliente
         String message = clientInput.readLine();
-        // Muestra el mensaje recibido
-        System.out.println("Atacante> " + message);
         // Limpia la entrada
         output.flush();
         // Envía la respuesta al cliente
         output.println("Destino> Mensaje recibido");
+        System.out.println("Destino> Mensaje recibido");
         // Cierra la conexión
         sourceSocket.close();
+        // Manda llamar al verificador de integridad
+        verificarIntegridad(message);
+    }
+
+    public void verificarIntegridad(String message) {
+        // Extrae el hash y el contenido del mensaje original
+        int longitud = message.length();
+        String hash = message.substring(longitud - 8, longitud);
+        String onlyMessage = message.substring(0, longitud - 8);
+        String hashCalculado = StringUtils.getHash(onlyMessage);
+        System.out.println("Destino> Hash original: " + hash);
+        System.out.println("Destino> Hash calculado: " + hashCalculado);
+        if(hash.equals(hashCalculado))
+            System.out.println("Destino> El mensaje es el original");
+        else
+            System.out.println("Destino> El mensaje fue modificado");
     }
 }

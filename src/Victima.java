@@ -1,5 +1,3 @@
-import sun.util.BuddhistCalendar;
-
 import java.io.*;
 import java.net.Socket;
 
@@ -33,7 +31,7 @@ public class Victima {
         // Writer para mandar mensajes al servidor
         PrintStream output = new PrintStream(clientSocket.getOutputStream());
         // Envía un mensaje al servidor
-        output.println(message);
+        output.println(message + StringUtils.getHash(message));
         // Obtiene la respuesta del servidor
         String respuesta = input.readLine();
         // Muestra la respuesta
@@ -42,9 +40,9 @@ public class Victima {
         clientSocket.close();
     }
 
-    public void sendFile(File file) throws IOException {
-        // TODO Convertir archivo a String
-        sendMessage("file_string");
+    public void sendFile(String filename) throws IOException {
+        System.out.println("Víctima> Enviando archivo...");
+        sendMessage(FileUtils.encodeFile(filename));
     }
 
 }

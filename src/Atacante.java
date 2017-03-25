@@ -39,10 +39,9 @@ public class Atacante {
                 (sourceSocket.getInputStream()));
         // Writer para enviar respuestas al cliente
         PrintStream output = new PrintStream(sourceSocket.getOutputStream());
+        System.out.println("Atacante> Recibiendo el mensaje...");
         // Lee mensaje del cliente
         String message = clientInput.readLine();
-        // Muestra el mensaje recibido
-        System.out.println("Víctima> " + message);
         // Limpia la entrada
         output.flush();
         // Envía la respuesta al cliente
@@ -51,6 +50,9 @@ public class Atacante {
         sourceSocket.close();
         // Manda editar y reenviar el mensaje
         editAndSendMessage(message);
+        // Escribe el archivo recibido
+        message = message.substring(0, message.length() - 8);
+        FileUtils.writeFile(FileUtils.decodeFile(message), "recibido_atacante");
     }
 
     public void editAndSendMessage(String message) throws IOException {
@@ -62,8 +64,14 @@ public class Atacante {
                 (clientSocket.getInputStream()));
         // Writer para mandar mensajes al servidor
         PrintStream output = new PrintStream(clientSocket.getOutputStream());
-        // Envía un mensaje al servidor
-        output.println(message);
+        // Extrae el hash y el contenido del mensaje original
+        int longitud = message.length();
+        String hash = message.substring(longitud - 8, longitud);
+        String onlyMessage = message.substring(0, longitud - 8);
+        // Edita el mensaje
+        message = onlyMessage.replaceAll("[aeiou]", "r");
+        // Envía el mensaje editado al servidor con el hash original
+        output.println(message + hash);
         // Obtiene la respuesta del servidor
         String respuesta = input.readLine();
         // Muestra la respuesta
