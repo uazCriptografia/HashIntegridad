@@ -14,7 +14,7 @@ public class Victima {
     */
 
     private static final int PUERTO = 1234;
-    private static final String HOST = "localhost";
+    private static final String HOST = "192.168.0.19";
 
     /*
     ----------------------------------------------------------------------------
